@@ -1,4 +1,4 @@
-package com.crtneko.springsecurity.controllersrest;
+package com.crtneko.springsecurity.controllers;
 
 import java.util.List;
 
