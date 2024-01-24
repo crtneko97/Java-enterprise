@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.crtneko.springsecurity.config.AppPasswordConfig;
+import com.crtneko.springsecurity.models.Roles;
 import com.crtneko.springsecurity.models.UserEntity;
 import com.crtneko.springsecurity.models.repository.UserRepository;
 
@@ -29,19 +30,18 @@ public class UserController {
 
         return "register";
     }
-
     @PostMapping("/register")
     public String registerUser(
-            @Valid UserEntity userEntity,   // Enables Error Messages
-            BindingResult result           // Ties the object with result
+            @Valid UserEntity userEntity,
+            BindingResult result
     ) {
-
-        // Check FOR @Valid Errors
         if (result.hasErrors()) {
             return "register";
         }
 
-        // TODO - Optionally: handle duplicate entries (@Unique PREFERABLY within ENTITY)
+        // Set the role for the user (e.g., USER role for a regular user)
+        userEntity.setRoles(Roles.USER);
+
         userEntity.setPassword(
                 appPasswordConfig.bCryptPasswordEncoder().encode(userEntity.getPassword())
         );
@@ -55,5 +55,7 @@ public class UserController {
 
         return "redirect:/login";
     }
+
+    
 
 }

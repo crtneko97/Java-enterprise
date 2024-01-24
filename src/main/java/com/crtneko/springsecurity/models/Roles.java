@@ -13,17 +13,18 @@ public enum Roles {
     ADMIN("GET_POST"),
     USER("GET");
 
-    private final String permissions;
+	private final String permissions;
 
-    Roles(String permissions) {
-        this.permissions = permissions;
-    }
+	private Roles(String permissions) {
+	    this.permissions = permissions;
+	}
 
-    public String getPermissions() {
-        return permissions;
-    }
+	public String getPermissions() {
+	    return permissions;
+	}
 
-    public static List<GrantedAuthority> splitPermissions(String permissions) {
+
+    public List<GrantedAuthority> splitPermissions() {
         String[] permissionsArray = permissions.split("_");
 
         return Arrays.stream(permissionsArray)
@@ -31,14 +32,26 @@ public enum Roles {
                 .collect(Collectors.toList());
     }
 
-    public static List<GrantedAuthority> getAuthorities(Roles role) {
-        SimpleGrantedAuthority roleAuthority = new SimpleGrantedAuthority("ROLE_" + role.name());
+    public List<GrantedAuthority> getAuthorities() {
+
+        SimpleGrantedAuthority role = new SimpleGrantedAuthority("ROLE_" + name());
         List<GrantedAuthority> permissions = new ArrayList<>();
 
-        permissions.add(roleAuthority);
-        permissions.addAll(splitPermissions(role.getPermissions()));
+        permissions.add(role);
+        permissions.addAll(splitPermissions()); // [GET, POST]
 
-        return permissions;
+        return permissions;     // [ROLE_ADMIN, GET, POST]
     }
+    
+    
+//    public static List<GrantedAuthority> getAuthorities(Roles role) {
+//        SimpleGrantedAuthority roleAuthority = new SimpleGrantedAuthority("ROLE_" + role.name());
+//        List<GrantedAuthority> permissions = new ArrayList<>();
+//
+//        permissions.add(roleAuthority);
+//        permissions.addAll(splitPermissions(role.getPermissions()));
+//
+//        return permissions;
+//    }
 
 }

@@ -1,21 +1,33 @@
 package com.crtneko.springsecurity.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "users")
 public class UserEntity implements UserDetails {
 
+	@Enumerated(EnumType. STRING) 
+	private Roles roles;
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;            // TODO - UUID
@@ -50,7 +62,16 @@ public class UserEntity implements UserDetails {
     // TODO - CHECK WITH ROLES
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authority;
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + roles.name()));
+    }
+
+
+    
+    public Roles getRole() {
+    	return roles;
+    }
+    public void setRoles(Roles roles) {
+        this.roles = roles;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class AppSecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers("/", "/hash", "/register", "/api/user").permitAll()
+                                .requestMatchers("/", "/hash", "/register", "/api/user", "/api/sayGet").permitAll()
                                 .requestMatchers("/admin-page").hasRole(ADMIN.name())
                                 .anyRequest().permitAll()
                         )
@@ -51,7 +51,7 @@ public class AppSecurityConfig {
     }
 
     public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider provider = new	 DaoAuthenticationProvider();
 
         provider.setPasswordEncoder(appPasswordConfig.bCryptPasswordEncoder());
         provider.setUserDetailsService(userEntityDetailsService);

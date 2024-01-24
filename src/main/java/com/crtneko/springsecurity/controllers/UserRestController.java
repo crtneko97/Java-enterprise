@@ -58,6 +58,15 @@ public class UserRestController {
                 HttpStatus.ACCEPTED
         );
     }
+   
+    // TODO - Den här behövs inte.
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @GetMapping("/admin-page")
+//    public String adminPage() {
+//        // Your controller logic
+//        return "admin-page";
+//    }
+
 
     @GetMapping("/helloAdmin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -73,12 +82,20 @@ public class UserRestController {
         return new ResponseEntity<>("Hello USER!", HttpStatus.ACCEPTED);
     }
 
+    // TODO - think it dosn't get the permition get from roles need to check up on that so for now i do hasRole etc underneath
+//    @GetMapping("/sayGet")
+//    @PreAuthorize("hasAuthority('GET')")
+//    public ResponseEntity<String> checkGetAuthority() {
+//
+//        return new ResponseEntity<>("You can only enter with GET Authority!", HttpStatus.ACCEPTED);
+//    }
+    
     @GetMapping("/sayGet")
-    @PreAuthorize("hasAuthority('GET')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<String> checkGetAuthority() {
-
         return new ResponseEntity<>("You can only enter with GET Authority!", HttpStatus.ACCEPTED);
     }
+
 
 
 
