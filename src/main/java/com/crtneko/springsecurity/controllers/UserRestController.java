@@ -83,18 +83,19 @@ public class UserRestController {
     }
 
     // TODO - think it dosn't get the permition get from roles need to check up on that so for now i do hasRole etc underneath
-//    @GetMapping("/sayGet")
-//    @PreAuthorize("hasAuthority('GET')")
-//    public ResponseEntity<String> checkGetAuthority() {
-//
-//        return new ResponseEntity<>("You can only enter with GET Authority!", HttpStatus.ACCEPTED);
-//    }
-    
     @GetMapping("/sayGet")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize("hasAuthority('GET')")
     public ResponseEntity<String> checkGetAuthority() {
+
         return new ResponseEntity<>("You can only enter with GET Authority!", HttpStatus.ACCEPTED);
     }
+    
+    // Change this one to Authorirty CHANGED!
+//    @GetMapping("/sayGet")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+//    public ResponseEntity<String> checkGetAuthority() {
+//        return new ResponseEntity<>("You can only enter with GET Authority!", HttpStatus.ACCEPTED);
+//    }
 
 
 

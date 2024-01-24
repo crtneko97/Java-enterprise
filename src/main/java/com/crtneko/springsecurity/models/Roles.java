@@ -43,7 +43,7 @@ public enum Roles {
         return permissions;     // [ROLE_ADMIN, GET, POST]
     }
     
-    
+    // Not sure about this one probably dump
 //    public static List<GrantedAuthority> getAuthorities(Roles role) {
 //        SimpleGrantedAuthority roleAuthority = new SimpleGrantedAuthority("ROLE_" + role.name());
 //        List<GrantedAuthority> permissions = new ArrayList<>();

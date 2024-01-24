@@ -1,7 +1,7 @@
 package com.crtneko.springsecurity.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -62,11 +62,25 @@ public class UserEntity implements UserDetails {
     // TODO - CHECK WITH ROLES
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + roles.name()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        // Add the role authority (e.g., "ROLE_ADMIN")
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + roles.name()));
+
+        // Add individual permissions (e.g., "GET", "POST")
+        List<GrantedAuthority> permissionAuthorities = roles.splitPermissions();
+        authorities.addAll(permissionAuthorities);
+
+        return authorities;
     }
 
-
+// OLD CODE
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + roles.name()));
+//    }
     
+
     public Roles getRole() {
     	return roles;
     }
