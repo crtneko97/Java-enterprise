@@ -1,4 +1,4 @@
-package com.crtneko.springsecurity.controllers;
+package com.crtneko.springsecurity.controllersrest;
 
 import java.util.List;
 
@@ -15,12 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.crtneko.springsecurity.config.AppPasswordConfig;
 import com.crtneko.springsecurity.models.UserEntity;
-import com.crtneko.springsecurity.models.UserRepository;
-
-/* TODO - Problem Authentication for PostMapping
-*
-*
-* */
+import com.crtneko.springsecurity.models.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api")
@@ -40,7 +35,7 @@ public class UserRestController {
 
         UserEntity userEntity = new UserEntity(
                 newUser.getUsername(),
-                newUser.getPassword(),
+                appPasswordConfig.bCryptPasswordEncoder().encode(newUser.getPassword()),
                 List.of(),
                 newUser.isAccountNonExpired(),
                 newUser.isAccountNonLocked(),

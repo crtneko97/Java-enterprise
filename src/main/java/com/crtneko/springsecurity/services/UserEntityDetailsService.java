@@ -1,10 +1,12 @@
-package com.crtneko.springsecurity.models;
+package com.crtneko.springsecurity.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.crtneko.springsecurity.models.repository.UserRepository;
 
 @Service    // TODO - Is this optional?
 public class UserEntityDetailsService implements UserDetailsService {

@@ -1,0 +1,59 @@
+package com.crtneko.springsecurity.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.crtneko.springsecurity.config.AppPasswordConfig;
+import com.crtneko.springsecurity.models.UserEntity;
+import com.crtneko.springsecurity.models.repository.UserRepository;
+
+import jakarta.validation.Valid;
+
+@Controller
+public class UserController {
+
+    private final UserRepository userRepository;
+    private final AppPasswordConfig appPasswordConfig; // Bcrypt
+
+    @Autowired
+    public UserController(UserRepository userRepository, AppPasswordConfig appPasswordConfig) {
+        this.userRepository = userRepository;
+        this.appPasswordConfig = appPasswordConfig;
+    }
+
+    @GetMapping("/register")
+    public String registerUserPage(UserEntity userEntity) {
+
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String registerUser(
+            @Valid UserEntity userEntity,   // Enables Error Messages
+            BindingResult result           // Ties the object with result
+    ) {
+
+        // Check FOR @Valid Errors
+        if (result.hasErrors()) {
+            return "register";
+        }
+
+        // TODO - Optionally: handle duplicate entries (@Unique PREFERABLY within ENTITY)
+        userEntity.setPassword(
+                appPasswordConfig.bCryptPasswordEncoder().encode(userEntity.getPassword())
+        );
+
+        userEntity.setAccountEnabled(true);
+        userEntity.setAccountNonLocked(true);
+        userEntity.setAccountNonExpired(true);
+        userEntity.setCredentialsNonExpired(true);
+
+        userRepository.save(userEntity);
+
+        return "redirect:/login";
+    }
+
+}

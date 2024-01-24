@@ -1,5 +1,4 @@
 package com.crtneko.springsecurity.config;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -12,7 +11,8 @@ public class AppWebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("home");
-        registry.addViewController("/test").setViewName("test");
+        registry.addViewController("/hello").setViewName("hello");
+        registry.addViewController("/register").setViewName("register");
         registry.addViewController("/admin-page").setViewName("admin-page");
     }
 

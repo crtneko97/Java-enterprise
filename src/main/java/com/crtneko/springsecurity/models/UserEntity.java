@@ -2,6 +2,10 @@ package com.crtneko.springsecurity.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,15 +20,19 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;            // TODO - UUID
 
+    // @Column(unique = true) Make values UNIQUE
+    @Size(min = 1, max = 64)
     private String username;
+
+    @Size(min = 4, max = 64, message = "Password must contain at least 4-64 chars")
     private String password;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean accountEnabled;
     private boolean credentialsNonExpired;
 
-    @Transient
-    @JsonIgnore
+    @Transient  // Do NOT persist through JPA (DB)
+    @JsonIgnore // Do NOT add this attribute to API requests
     private List<GrantedAuthority> authority;
 
     public UserEntity() {}
