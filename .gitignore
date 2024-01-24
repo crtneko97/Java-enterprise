@@ -1,0 +1,48 @@
+# Gradle specific
+/.gradle/
+build/
+
+# IntelliJ specific
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse specific
+.settings/
+.project
+.classpath
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# IntelliJ IDEA
+.idea/
+
+# User-specific files
+*.iml
+*.iws
+
+# Compiled Java bytecode
+target/
+out/
+
+# Eclipse project files
+.eclipse/
+.factorypath
+
+# Spring Boot
+/build/
+/bin/
+/target/
+
+# Local configuration file
+application.properties
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
