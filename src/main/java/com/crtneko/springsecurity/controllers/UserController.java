@@ -30,6 +30,8 @@ public class UserController {
 
         return "register";
     }
+    
+    // Add model and more to create a drop down for user Role.
     @PostMapping("/register")
     public String registerUser(
             @Valid UserEntity userEntity,

@@ -1,11 +1,9 @@
 package com.crtneko.springsecurity.models;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,13 +44,14 @@ public class UserEntity implements UserDetails {
     @Transient  // Do NOT persist through JPA (DB)
     @JsonIgnore // Do NOT add this attribute to API requests
     private List<GrantedAuthority> authority;
+    
 
     public UserEntity() {}
-    public UserEntity(String username, String password, List<GrantedAuthority> authority,
+    public UserEntity(String username, String password,Roles roles,
                       boolean accountNonExpired, boolean accountNonLocked, boolean accountEnabled, boolean credentialsNonExpired) {
         this.username = username;
         this.password = password;
-        this.authority = authority;
+        this.roles = roles;
         this.accountNonExpired = accountNonExpired;
         this.accountNonLocked = accountNonLocked;
         this.accountEnabled = accountEnabled;
@@ -60,18 +59,25 @@ public class UserEntity implements UserDetails {
     }
 
     // TODO - CHECK WITH ROLES
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//
+//        // Add the role authority (e.g., "ROLE_ADMIN")
+//        authorities.add(new SimpleGrantedAuthority("ROLE_" + roles.name()));
+//
+//        // Add individual permissions (e.g., "GET", "POST")
+//        List<GrantedAuthority> permissionAuthorities = roles.splitPermissions();
+//        authorities.addAll(permissionAuthorities);
+//
+//        return authorities;
+//    }
+    
+    // This one works just like the one above. less code.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
 
-        // Add the role authority (e.g., "ROLE_ADMIN")
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + roles.name()));
-
-        // Add individual permissions (e.g., "GET", "POST")
-        List<GrantedAuthority> permissionAuthorities = roles.splitPermissions();
-        authorities.addAll(permissionAuthorities);
-
-        return authorities;
+        return roles.getAuthorities();
     }
 
 // OLD CODE
@@ -124,10 +130,6 @@ public class UserEntity implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setAuthority(List<GrantedAuthority> authority) {
-        this.authority = authority;
     }
 
     public void setAccountNonExpired(boolean accountNonExpired) {

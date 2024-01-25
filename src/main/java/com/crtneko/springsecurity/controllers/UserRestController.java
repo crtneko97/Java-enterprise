@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crtneko.springsecurity.config.AppPasswordConfig;
+import com.crtneko.springsecurity.models.Roles;
 import com.crtneko.springsecurity.models.UserEntity;
 import com.crtneko.springsecurity.models.repository.UserRepository;
 
@@ -30,13 +32,15 @@ public class UserRestController {
         this.userRepository = userRepository;
     }
 
+
+    
     @PostMapping("/user")
     public ResponseEntity<UserEntity> createNewUser(@RequestBody UserEntity newUser) {
 
         UserEntity userEntity = new UserEntity(
                 newUser.getUsername(),
                 appPasswordConfig.bCryptPasswordEncoder().encode(newUser.getPassword()),
-                List.of(),
+                Roles.ADMIN,
                 newUser.isAccountNonExpired(),
                 newUser.isAccountNonLocked(),
                 newUser.isEnabled(),
@@ -82,7 +86,7 @@ public class UserRestController {
         return new ResponseEntity<>("Hello USER!", HttpStatus.ACCEPTED);
     }
 
-    // TODO - think it dosn't get the permition get from roles need to check up on that so for now i do hasRole etc underneath
+
     @GetMapping("/sayGet")
     @PreAuthorize("hasAuthority('GET')")
     public ResponseEntity<String> checkGetAuthority() {
